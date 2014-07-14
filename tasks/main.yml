@@ -1,0 +1,79 @@
+---
+- name: Assert platform is supported
+  tags: heka
+  assert:
+    that:
+      - ansible_os_family in ['Debian', 'RedHat']
+
+
+- include_vars: "{{ ansible_os_family }}.yml"
+  tags: heka
+
+
+- name: Install heka download directory (local)
+  tags: heka
+  local_action: file
+    state=directory
+    owner=0
+    group=0
+    mode=2777
+    dest={{ ansible_data_path }}
+
+- name: Download heka (local)
+  tags: heka
+  sudo: no
+  local_action: get_url
+    dest={{ ansible_data_path }}/{{ heka_install_filename }}
+    url={{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}
+    mode=0644
+    sha256sum={{ heka_install_filename_sha256sum }}
+
+
+- name: Update apt package cache
+  tags: heka
+  when: ansible_os_family == 'Debian'
+  apt:
+    update_cache=yes
+    cache_valid_time=3600
+
+- include: selinux.yml
+  tags: heka
+
+- name: Install required packages
+  tags: heka
+  with_items: heka_package_list
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+
+
+- name: Syncronize heka installation package
+  tags: heka
+  synchronize:
+    checksum=true
+    mode=push
+    src={{ ansible_data_path }}/{{ heka_install_filename }}
+    dest=/tmp/{{ heka_install_filename }}
+
+
+- include: Debian.yml
+  tags: heka
+  when: ansible_os_family == 'Debian'
+
+- include: RedHat.yml
+  tags: heka
+  when: ansible_os_family == 'RedHat'
+
+
+- name: Install hekad configuration
+  tags: heka
+  template:
+    src=hekad.toml.j2
+    dest=/etc/hekad.toml
+    owner=0
+    group=0
+    mode=0644
+
+- name: Enable hekad service
+  tags: heka
+  service:
+    enabled=true
+    name=hekad

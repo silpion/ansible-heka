@@ -1,0 +1,5 @@
+---
+- name: Install Ansible SELinux requirements
+  tags: heka
+  with_items: heka_package_list_selinux
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"

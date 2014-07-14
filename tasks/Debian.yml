@@ -1,0 +1,20 @@
+---
+- name: Query dpkg package database for heka
+  tags: heka
+  register: heka_query_installed_packages
+  command: dpkg -l heka
+
+- name: Install heka
+  tags: heka
+  when: '"heka" not in heka_query_installed_packages.stdout'
+  command: dpkg -i /tmp/{{ heka_install_filename }}
+
+- name: Install heka service
+  tags: heka
+  notify: service restart hekad
+  template:
+    src=service_upstart.j2
+    dest=/etc/init/hekad.conf
+    owner=0
+    group=0
+    mode=0644

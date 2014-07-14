@@ -1,0 +1,8 @@
+---
+heka_install_filename: heka_{{ heka_version }}_amd64.deb
+heka_install_filename_sha256sum: '689281880cbc58447a6200f2825df2dde898d31b42ed3d267b3eae55662f8ee2'
+
+heka_package_list:
+  - rsync
+heka_package_list_selinux:
+  - python-selinux

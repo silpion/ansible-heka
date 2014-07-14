@@ -1,0 +1,6 @@
+---
+- name: service restart hekad
+  tags: heka
+  service:
+    state=restarted
+    name=hekad
