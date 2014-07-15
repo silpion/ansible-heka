@@ -1,7 +1,7 @@
 ---
 ansible_data_path: /usr/local/src/ansible/data
 
-heka_role_version: 0.1
+heka_role_version: 0.1.0
 
 heka_version: 0.6.0
 heka_mirror: https://github.com/mozilla-services/heka/releases/download
