@@ -65,6 +65,7 @@
 
 - name: Install hekad configuration
   tags: heka
+  notify: service restart hekad
   template:
     src=hekad.toml.j2
     dest=/etc/hekad.toml
