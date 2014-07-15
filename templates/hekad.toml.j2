@@ -1,0 +1,38 @@
+{% if heka_input_statsd_enabled %}
+[StatAccumInput]
+
+[input_statsd]
+Type = "StatsdInput"
+address = "{{ heka_input_statsd_address }}"
+{% endif %}
+
+
+{% if heka_output_heka_log_enabled %}
+[encoder_heka_log_payload]
+Type = "PayloadEncoder"
+append_newlines = false
+prefix_ts = true
+ts_format = "2006/01/02 3:04:05PM MST"
+
+[output_heka_log]
+Type = "FileOutput"
+message_matcher = "TRUE"
+encoder = "encoder_heka_log_payload"
+path = "{{ heka_output_heka_log_path }}"
+perm = "0644"
+{% endif %}
+
+{% if heka_output_heka_dasher_enabled %}
+[output_heka_dasher]
+Type = "DashboardOutput"
+address = "{{ heka_output_heka_dasher_address }}"
+{% endif %}
+
+{% if heka_output_nagios_enabled %}
+[output_nagios]
+Type = "NagiosOutput"
+url = "{{ heka_output_nagios_url }}"
+username = "{{ heka_output_nagios_username }}"
+password = "{{ heka_output_nagios_password }}"
+message_matcher = "Type == 'heka.sandbox-output' && Fields[payload_type] == 'nagios-external-command' && Fields[payload_name] == 'PROCESS_SERVICE_CHECK_RESULT'"
+{% endif %}
