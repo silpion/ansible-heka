@@ -2,6 +2,8 @@
 - name: Query dpkg package database for heka
   tags: heka
   register: heka_query_installed_packages
+  ignore_errors: true
+  failed_when: false
   command: dpkg -l heka
 
 - name: Install heka
