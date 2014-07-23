@@ -4,4 +4,4 @@
   sudo: yes
   sudo_user: root
   roles:
-    - { role: heka }
+    - { role: ansible-heka }
