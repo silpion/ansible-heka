@@ -1,1 +1,28 @@
 ---
+# enable/disable modules
+#   inputs
+#     statsd
+heka_input_statsd_enabled: true
+
+#   outputs
+#     heka debug log
+heka_output_heka_log_enabled: true
+#     heka dasher
+heka_output_heka_dasher_enabled: true
+#     nagios
+heka_output_nagios_enabled: false
+
+# configure modules
+#   inputs
+#     statsd
+heka_input_statsd_address: ':8125'
+
+#   outputs
+#     heka debug log
+heka_output_heka_log_path: /var/log/hekad.log
+#     heka dasher
+heka_output_heka_dasher_address: '0.0.0.0:4352'
+#     nagios
+heka_output_nagios_url: "http://localhost/nagios/cgi-bin/cmd.cgi"
+heka_output_nagios_username: "nagiosadmin"
+heka_output_nagios_password: "nagios"

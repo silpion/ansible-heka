@@ -6,6 +6,4 @@ stop on runlevel [!2345]
 respawn
 respawn limit 10 5
 
-script
-  exec /usr/bin/hekad -config /etc/hekad.toml
-end script
+exec /usr/bin/hekad -config /etc/hekad.toml
