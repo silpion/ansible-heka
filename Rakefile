@@ -41,13 +41,13 @@ task :vagrant => [
 ]
 
 
-desc "Run all tests with Packer"
-task :packer => [
-  :lint,
-  :packer_build,
-  :spec,
-  :clean
-]
+#desc "Run all tests with Packer"
+#task :packer => [
+#  :lint,
+#  :packer_build,
+#  :spec,
+#  :clean
+#]
 
 
 task :default => :lint
