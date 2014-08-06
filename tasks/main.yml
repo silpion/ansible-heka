@@ -63,12 +63,36 @@
   when: ansible_os_family == 'RedHat'
 
 
+- name: Install hekad directories
+  tags: heka
+  with_items:
+    - "/etc/hekad.d"
+    - "{{ heka_hekad_base_dir }}"
+    - "{{ heka_hekad_base_dir }}/dashboard"
+  file:
+    state=directory
+    owner=0
+    group=0
+    mode=0755
+    dest={{ item }}
+
 - name: Install hekad configuration
   tags: heka
   notify: service restart hekad
   template:
     src=hekad.toml.j2
-    dest=/etc/hekad.toml
+    dest=/etc/hekad.d/hekad.toml
+    owner=0
+    group=0
+    mode=0644
+
+- name: Install heka outputs
+  tags: heka
+  notify: service restart hekad
+  with_items: heka_outputs
+  template:
+    src=hekad_{{ item.type }}.toml.j2
+    dest=/etc/hekad.d/{{ item.name }}.toml
     owner=0
     group=0
     mode=0644
