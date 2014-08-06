@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
 
     d.vm.hostname = 'ansiblehekatest'
     d.vm.synced_folder '.', '/vagrant', id: 'vagrant-root', disabled: true
+    d.vm.network 'forwarded_port', host: 4352, guest: 4352
 
     d.vm.provision :ansible do |ansible|
       ansible.playbook = 'tests/vagrant.yml'
