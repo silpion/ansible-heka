@@ -15,7 +15,9 @@ end
 end
 
 %w{
+  /var/log/hekad.log
   /etc/hekad.d/hekad.toml
+  /etc/hekad.d/hekad_log.toml
   /etc/hekad.d/dashboard.toml
 }.each do |f|
   describe file(f) do
