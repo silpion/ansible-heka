@@ -15,7 +15,7 @@ PROC=hekad
 
 start(){
   echo -n $"Starting $PROC: "
-  daemon /usr/bin/hekad -config=/etc/hekad.d
+  daemon /usr/bin/hekad -config={{ heka_hekad_etc_dir }}
   ret=$?
   echo
   [ $ret -eq 0 ] && touch $LOCK
