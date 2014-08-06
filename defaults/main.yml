@@ -27,7 +27,6 @@ heka_outputs:
   - dashbord:
     type: dashboard
     name: dashboard
-    address: '0.0.0.0:4352'
   - hekad_log:
     type: fileoutput
     name: hekad_log
