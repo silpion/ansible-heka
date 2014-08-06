@@ -1,0 +1,7 @@
+[{{ item.name }}_stat_accumulator]
+type = "StatAccumInput"
+
+[input_{{ item.name }}]
+type = "StatsdInput"
+address = "{{ item.address|default(':8125') }}"
+stat_accum_name = "{{ item.name }}_stat_accumulator"

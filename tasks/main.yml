@@ -66,8 +66,7 @@
 - name: Install hekad directories
   tags: heka
   with_items:
-    - "/etc/hekad.d"
-    - "{{ heka_hekad_base_dir }}"
+    - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
   file:
     state=directory
@@ -76,26 +75,39 @@
     mode=0755
     dest={{ item }}
 
+
 - name: Install hekad configuration
   tags: heka
   notify: service restart hekad
   template:
     src=hekad.toml.j2
-    dest=/etc/hekad.d/hekad.toml
+    dest={{ heka_hekad_etc_dir }}/hekad.toml
     owner=0
     group=0
     mode=0644
 
-- name: Install heka outputs
+- name: Install heka configuration (inputs)
+  tags: heka
+  notify: service restart hekad
+  with_items: heka_inputs
+  template:
+    src=hekad_{{ item.type }}.toml.j2
+    dest={{ heka_hekad_etc_dir }}/{{ item.name }}.toml
+    owner=0
+    group=0
+    mode=0644
+
+- name: Install heka configuration (outputs)
   tags: heka
   notify: service restart hekad
   with_items: heka_outputs
   template:
     src=hekad_{{ item.type }}.toml.j2
-    dest=/etc/hekad.d/{{ item.name }}.toml
+    dest={{ heka_hekad_etc_dir }}/{{ item.name }}.toml
     owner=0
     group=0
     mode=0644
+
 
 - name: Enable hekad service
   tags: heka
