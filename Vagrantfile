@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
     d.vm.network 'forwarded_port', host: 4352, guest: 4352
 
     d.vm.provision :ansible do |ansible|
-      ansible.playbook = 'tests/vagrant.yml'
+      ansible.playbook = 'tests/playbook.yml'
       ansible.groups = {
         'vagrant' => ['ansiblehekatest']
       }
