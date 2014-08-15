@@ -114,3 +114,9 @@
   service:
     enabled=true
     name=hekad
+
+- name: Start hekad service
+  tags: heka
+  service:
+    state=started
+    name=hekad
