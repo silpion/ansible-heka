@@ -1,0 +1,16 @@
+[encoder_{{ item.encoder }}]
+type = "PayloadEncoder"
+append_newlines = {{ item.append_newlines|default('false') }}
+prefix_ts = {{ item.prefx_ts|default('true') }}
+ts_format = "{{ item.ts_format|default('2006/01/02 3:04:05PM MST') }}"
+
+[output_{{ item.name }}]
+type = "FileOutput"
+path = "{{ item.path }}"
+perm = "{{ item.perm|default(0644) }}"
+folder_perm = "{{ item.folder_perm|default(0755) }}"
+flush_interval = {{ item.flush_interval|default(1000) }}
+flush_count = {{ item.flush_count|default(1) }}
+flush_operator = "{{ item.flush_operator|default('AND') }}"
+message_matcher = "{{ item.message_matcher|default('TRUE') }}"
+encoder = "encoder_{{ item.encoder }}"

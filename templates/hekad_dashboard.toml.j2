@@ -1,0 +1,5 @@
+[output_{{ item.name }}]
+type = "DashboardOutput"
+address = "{{ item.address|default('0.0.0.0:4352') }}"
+ticker_interval = {{ item.ticker_interval|default(5) }}
+message_matcher = "{{ item.message_matcher|default("Type == 'heka.all-report' || Type == 'heka.sandbox-output' || Type == 'heka.sandbox-terminated'") }}"
