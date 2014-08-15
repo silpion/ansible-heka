@@ -1,6 +1,9 @@
+# TODO switch docker vs vagrant
+
 require 'serverspec'
-require 'pathname'
 require 'net/ssh'
+require 'lib/docker'
+require 'lib/vagrant'
 
 include SpecInfra::Helper::Exec
 include SpecInfra::Helper::DetectOS
@@ -8,28 +11,12 @@ include SpecInfra::Helper::Ssh
 
 RSpec.configure do |c|
   c.before :all do
-    host = nil
-    user = nil
-    keys = nil
-    port = nil
-    config = `vagrant ssh-config`
-    if config != ''
-      config.each_line do |line|
-        if match = /Hostname (.*)/.match(line)
-          host = match[1]
-        elsif match = /User (.*)/.match(line)
-          user = match[1]
-        elsif match = /IdentityFile (.*)/.match(line)
-          keys = [match[1].gsub(/"/, '')]
-        elsif match = /Port (.*)/.match(line)
-          port = match[1]
-        end
-      end
-      c.host = host
-      options = Net::SSH::Config.for(c.host)
-      options[:keys] = keys
-      options[:port] = port
-      c.ssh = Net::SSH.start(host, user, options)
-    end
+    d = Docker.new
+    c.host = d.ssh_host
+    opts = Net::SSH::Config.for(c.host)
+    opts[:port] = d.ssh_port
+    opts[:keys] = d.ssh_keys
+    opts[:auth_methods] = Net::SSH::Config.default_auth_methods
+    c.ssh = Net::SSH.start(d.ssh_host, d.ssh_user, opts)
   end
 end

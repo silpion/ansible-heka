@@ -4,8 +4,25 @@ describe package('heka') do
   it { should be_installed }
 end
 
-describe file('/etc/hekad.toml') do
-  it { should be_file }
+%w{
+  /etc/hekad.d
+  /var/cache/hekad
+  /var/cache/hekad/dashboard
+}.each do |f|
+  describe file(f) do
+    it { should be_directory }
+  end
+end
+
+%w{
+  /var/log/hekad.log
+  /etc/hekad.d/hekad.toml
+  /etc/hekad.d/hekad_log.toml
+  /etc/hekad.d/dashboard.toml
+}.each do |f|
+  describe file(f) do
+    it { should be_file }
+  end
 end
 
 describe service('hekad') do

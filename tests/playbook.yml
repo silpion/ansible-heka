@@ -1,7 +1,4 @@
 ---
 - hosts: all
-  user: vagrant
-  sudo: yes
-  sudo_user: root
   roles:
     - { role: ansible-heka }
