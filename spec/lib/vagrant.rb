@@ -27,20 +27,4 @@ class Vagrant
   public
   attr_reader :ssh_host, :ssh_user, :ssh_keys, :ssh_port
 
-  def vagrant_up
-    `vagrant up --no-provision`
-  end
-
-  def vagrant_provision
-    `vagrant provision`
-  end
-
-  def vagrant_halt
-    `vagrant halt`
-  end
-
-  def vagrant_destroy
-    `vagrant destroy --force`
-  end
-
 end

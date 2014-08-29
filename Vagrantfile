@@ -5,16 +5,16 @@
 VAGRANT_API_VERSION = '2'
 Vagrant.configure(VAGRANT_API_VERSION) do |config|
 
-  config.vm.box = 'hashicorp/precise64'
+  config.vm.box = 'ubuntu/trusty64'
 
   config.vm.define :ansiblehekatest do |d|
 
     d.vm.hostname = 'ansiblehekatest'
     d.vm.synced_folder '.', '/vagrant', id: 'vagrant-root', disabled: true
-    d.vm.network 'forwarded_port', host: 4352, guest: 4352
 
     d.vm.provision :ansible do |ansible|
       ansible.playbook = 'tests/playbook.yml'
+      ansible.tags = ENV['ANSIBLE_TAGS']
       ansible.groups = {
         'vagrant' => ['ansiblehekatest']
       }
