@@ -1,27 +1,34 @@
 require 'serverspec'
 require 'net/ssh'
 
-include SpecInfra::Helper::DetectOS
-include SpecInfra::Helper::Exec
-include SpecInfra::Helper::Ssh
-
+set :backend, :ssh
+set :env, :LANG => 'C', :LC_MESSAGES => 'C'
 
 if ENV['RAKE_ANSIBLE_USE_VAGRANT']
-  require 'lib/vagrant'
-  conn = Vagrant.new
+  begin
+    require 'lib/vagrant'
+    conn = Vagrant.new
+  rescue LoadError
+    fail 'lib/vagrant is not available'
+  rescue
+    fail 'failed to load lib/vagrant'
+  end
 else
-  require 'lib/docker'
-  conn = Docker.new
-end
-
-
-RSpec.configure do |config|
-  config.before :all do
-    config.host = conn.ssh_host
-    opts = Net::SSH::Config.for(config.host)
-    opts[:port] = conn.ssh_port
-    opts[:keys] = conn.ssh_keys
-    opts[:auth_methods] = Net::SSH::Config.default_auth_methods
-    config.ssh = Net::SSH.start(conn.ssh_host, conn.ssh_user, opts)
+  begin
+    require 'lib/docker'
+    conn = Docker.new
+  rescue LoadError
+    fail 'lib/docker is not available'
+  rescue
+    fail 'failed to load lib/docker'
   end
 end
+
+options = Net::SSH::Config.for(conn.ssh_host)
+options[:user] = conn.ssh_user
+options[:port] = conn.ssh_port
+options[:keys] = conn.ssh_keys
+options[:auth_methods] = Net::SSH::Config.default_auth_methods
+
+set :host, conn.ssh_host
+set :ssh_options, options
