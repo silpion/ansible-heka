@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'serverspec'
-gem 'vagrant-wrapper'
+gem 'serverspec', '>=2.0.0.beta20'
