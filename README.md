@@ -47,53 +47,32 @@ Apache Version 2.0
 
 ## Integration testing
 
-This role provides integration tests using the Ruby RSpec/serverspec
-framework.
+This role provides integration tests using the Ruby RSpec/serverspec framework
+with a few drawbacks at the time of writing this documentation.
+
+- Currently supports ansible_os_family == 'Debian' only.
 
 Running integration tests requires a number of dependencies being
-installed:
+installed. As this role uses Ruby RSpec there is the need to have
+Ruby with rake and bundler available.
 
-* [Ruby](https://www.ruby-lang.org)
-* [rake](https://github.com/ruby/rake)
-* [bundler](http://bundler.io)
-
-Once bundler has been installed required Gems can be installed with
-bundler.
-
+    # install role specific dependencies with bundler
     bundle install
 
-### Docker
-
-The integration test suite uses [Docker](https://docker.io) container
-to provision this role and run integration tests.
-
-
-The container used for running the integration tests is hosted at the
-[Docker Index](https://registry.hub.docker.com/u/silpion/ubuntu-upstart-sshkey/)
-and is open source at
-[Github](https://github.com/silpion/docker-ubuntu-upstart-sshkey), is
-based on the official Ubuntu Docker container with Upstart support
-and integrates an *insecure-private-key* mechanism like Vagrant uses
-it to allow passwordless SSH into the VM/container.
-
-
-This allows ansible to provision the container flawlessly.
+<!-- -->
 
     # run the complete test suite with Docker
-    rake docker
+    rake suite
 
-### Vagrant
-
-Integration tests with [Vagrant](http://www.vagrantup.com/) is
-implemented but serverspec configuration hardcodes to use the
-Docker configuration.
-
-
-Any help with a rake task based switch for the configuration
-library to use is greatly appreciated.
+<!-- -->
 
     # run the complete test suite with Vagrant
-    rake vagrant
+    RAKE_ANSIBLE_USE_VAGRANT=1 rake suite
+
+
+## Author information
+
+Mark Kusch @mark.kusch silpion.de
 
 
 <!-- vim: set nofen ts=4 sw=4 et: -->
