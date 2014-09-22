@@ -1,6 +1,6 @@
 ---
 heka_install_filename: heka_{{ heka_version }}_amd64.deb
-heka_install_filename_sha256sum: '689281880cbc58447a6200f2825df2dde898d31b42ed3d267b3eae55662f8ee2'
+heka_install_filename_sha256sum: 'c3d1f08c0548950c4a4cf74cdb408a38f76c5e0efc919f67be3b26eb300a6c0a'
 
 heka_package_list:
   - rsync
