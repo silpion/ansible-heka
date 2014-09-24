@@ -10,20 +10,20 @@
   tags: heka
 
 
-- name: Install heka download directory (local)
+- name: Install local ansible data path directory (local)
   tags: heka
   local_action: file
     state=directory
     owner=0
     group=0
     mode=2777
-    dest={{ ansible_data_path }}
+    dest={{ local_ansible_data_path }}
 
 - name: Download heka (local)
   tags: heka
   sudo: no
   local_action: get_url
-    dest={{ ansible_data_path }}/{{ heka_install_filename }}
+    dest={{ local_ansible_data_path }}/{{ heka_install_filename }}
     url={{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}
     mode=0644
     sha256sum={{ heka_install_filename_sha256sum }}
@@ -45,13 +45,19 @@
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
 
 
+- name: Install remote ansible data path directory
+  tags: heka
+  file:
+    state=directory
+    dest={{ remote_ansible_data_path }}
+
 - name: Syncronize heka installation package
   tags: heka
   synchronize:
     checksum=true
     mode=push
-    src={{ ansible_data_path }}/{{ heka_install_filename }}
-    dest=/tmp/{{ heka_install_filename }}
+    src={{ local_ansible_data_path }}/{{ heka_install_filename }}
+    dest={{ remote_ansible_data_path }}/{{ heka_install_filename }}
 
 
 - include: Debian.yml
