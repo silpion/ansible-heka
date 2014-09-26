@@ -1,3 +1,9 @@
+# 0.4.1
+
+Mark Kusch (2):
+      Update ubuntu-upstart-sshkey container to version 1.0.0
+      Fix package installation if remote_ansible_data_path != /tmp
+
 # 0.4.0
 
 Mark Kusch (1):
