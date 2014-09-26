@@ -9,7 +9,7 @@
 - name: Install heka
   tags: heka
   when: '"heka" not in heka_query_installed_packages.stdout'
-  command: dpkg -i /tmp/{{ heka_install_filename }}
+  command: dpkg -i {{ remote_ansible_data_path }}/{{ heka_install_filename }}
 
 - name: Install heka service
   tags: heka
