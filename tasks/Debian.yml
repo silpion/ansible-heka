@@ -8,11 +8,13 @@
 
 - name: Install heka
   tags: heka
+  sudo: yes
   when: '"heka" not in heka_query_installed_packages.stdout'
-  command: dpkg -i {{ remote_ansible_data_path }}/{{ heka_install_filename }}
+  command: dpkg -i {{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
 
 - name: Install heka service
   tags: heka
+  sudo: yes
   notify: service restart hekad
   template:
     src=service_upstart.j2

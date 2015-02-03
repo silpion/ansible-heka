@@ -1,7 +1,2 @@
 ---
 heka_install_filename: heka_{{ heka_version }}_amd64.deb
-
-heka_package_list:
-  - rsync
-heka_package_list_selinux:
-  - python-selinux
