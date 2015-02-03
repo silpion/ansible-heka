@@ -6,7 +6,23 @@
       - ansible_os_family in ['Debian', 'RedHat']
 
 
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: Load version vars
+  tags: heka
+  with_first_found:
+    - ../vars/versions/{{ ansible_os_family }}/{{ heka_version }}.yml
+    - ../vars/versions/default.yml
+  include_vars: "{{ item }}"
+
+
+- name: Assert version vars
+  tags: heka
+  assert:
+    that:
+      - heka_install_filename_sha256sum not in (None, "")
+
+
+- name: Include OS specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
   tags: heka
 
 
