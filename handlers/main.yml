@@ -1,6 +1,8 @@
 ---
 - name: service restart hekad
   tags: heka
+  sudo: yes
+  when: heka_service_allow_restart
   service:
     state=restarted
     name=hekad
