@@ -32,4 +32,4 @@ galaxy_info:
   - monitoring
   - system
 dependencies:
-  - { role: groover.util }
+  - { role: silpion.util }
