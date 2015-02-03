@@ -1,4 +1,9 @@
 ---
+heka_version: 0.8.3
+
+# Whether to allow the handlers to automatically restart heka
+heka_service_allow_restart: true
+
 # where heka configuration files will get installed
 heka_hekad_etc_dir: /etc/hekad.d
 
