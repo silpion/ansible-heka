@@ -31,4 +31,5 @@ galaxy_info:
   categories:
   - monitoring
   - system
-dependencies: []
+dependencies:
+  - { role: silpion.util }
