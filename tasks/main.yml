@@ -26,20 +26,9 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 
-- name: Download heka
+- name: Include util get/put instructions
   tags: heka
-  local_action: get_url
-    dest={{ util_persistent_data_path_local }}/{{ heka_install_filename }}
-    url={{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}
-    mode=0644
-    sha256sum={{ heka_install_filename_sha256sum }}
-
-- name: Upload heka
-  tags: heka
-  copy:
-    src={{ util_persistent_data_path_local }}/{{ heka_install_filename }}
-    dest={{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
-    mode=0644
+  include: util.yml
 
 
 - include: Debian.yml
