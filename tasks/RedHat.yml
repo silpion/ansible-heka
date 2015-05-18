@@ -6,13 +6,13 @@
 
 - name: Install heka
   tags: heka
-  sudo: yes
+  become: yes
   when: '"heka" not in heka_query_installed_packages.stdout'
   command: rpm -ivH {{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
 
 - name: Install hekad service
   tags: heka
-  sudo: yes
+  become: yes
   notify: service restart hekad
   template:
     src=service_sysvinit.j2

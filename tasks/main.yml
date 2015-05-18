@@ -42,7 +42,7 @@
 
 - name: Install hekad directories
   tags: heka
-  sudo: true
+  become: true
   with_items:
     - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
@@ -56,7 +56,7 @@
 
 - name: Install hekad configuration
   tags: heka
-  sudo: true
+  become: true
   notify: service restart hekad
   template:
     src=hekad.toml.j2
@@ -67,7 +67,7 @@
 
 - name: Install heka configuration (inputs)
   tags: heka
-  sudo: true
+  become: true
   notify: service restart hekad
   with_items: heka_inputs
   template:
@@ -79,7 +79,7 @@
 
 - name: Install heka configuration (outputs)
   tags: heka
-  sudo: true
+  become: true
   notify: service restart hekad
   with_items: heka_outputs
   template:
@@ -92,7 +92,7 @@
 
 - name: Ensure heka service
   tags: heka
-  sudo: true
+  become: true
   service:
     state=started
     enabled=yes
