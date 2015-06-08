@@ -1,3 +1,15 @@
+# 0.6.0
+
+Mark Kusch (7):
+
+* Fix role according to util role become framework issues
+* Use util/\_{get,put} wrappers for downloading and uploading assets
+* s/sudo/become/g
+* Update heka installation to version 0.9.2
+* Remove useless quotes
+* This role now requires ansible 1.9
+* Do not pin util role to a version which will not help
+
 # 0.5.0
 
 Mark Kusch (12):

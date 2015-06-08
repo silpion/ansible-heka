@@ -4,7 +4,7 @@ galaxy_info:
   description: Install heka stream processing software.
   company: http://silpion.de
   license: Apache 2
-  min_ansible_version: 1.5
+  min_ansible_version: 1.9
   platforms:
   - name: EL
     versions:
