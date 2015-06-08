@@ -1,0 +1,12 @@
+---
+- { include: ../../silpion.util/tasks/_get.yml,
+      url: "{{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}",
+      dest: "{{ util_persistent_data_path_local }}/{{ heka_install_filename }}",
+      sha256sum: "{{ heka_install_filename_sha256sum }}"
+  }
+
+
+- { include: ../../silpion.util/tasks/_put.yml,
+      src: "{{ util_persistent_data_path_local }}/{{ heka_install_filename }}",
+      dest: "{{ util_persistent_data_path_remote }}/{{ heka_install_filename }}"
+  }

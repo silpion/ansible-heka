@@ -26,24 +26,9 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 
-- name: Download heka
+- name: Include util get/put instructions
   tags: heka
-  sudo: no
-  local_action: get_url
-    dest={{ util_persistent_data_path_local }}/{{ heka_install_filename }}
-    url={{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}
-    mode=0644
-    sha256sum={{ heka_install_filename_sha256sum }}
-
-- name: Upload heka
-  tags: heka
-  sudo: yes
-  copy:
-    src={{ util_persistent_data_path_local }}/{{ heka_install_filename }}
-    dest={{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
-    owner=0
-    group=0
-    mode=0644
+  include: util.yml
 
 
 - include: Debian.yml
@@ -57,7 +42,7 @@
 
 - name: Install hekad directories
   tags: heka
-  sudo: yes
+  become: true
   with_items:
     - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
@@ -71,7 +56,7 @@
 
 - name: Install hekad configuration
   tags: heka
-  sudo: yes
+  become: true
   notify: service restart hekad
   template:
     src=hekad.toml.j2
@@ -82,7 +67,7 @@
 
 - name: Install heka configuration (inputs)
   tags: heka
-  sudo: yes
+  become: true
   notify: service restart hekad
   with_items: heka_inputs
   template:
@@ -94,7 +79,7 @@
 
 - name: Install heka configuration (outputs)
   tags: heka
-  sudo: yes
+  become: true
   notify: service restart hekad
   with_items: heka_outputs
   template:
@@ -107,7 +92,7 @@
 
 - name: Ensure heka service
   tags: heka
-  sudo: yes
+  become: true
   service:
     state=started
     enabled=yes
