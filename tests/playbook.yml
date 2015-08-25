@@ -1,4 +1,17 @@
 ---
 - hosts: all
+  vars:
+    heka_tasks:
+      - file: "dashboard"
+        section: "DashboardOutput"
+        options:
+          - option: "type"
+            value: "\\\"DashboardOutput\\\""
+          - option: "address"
+            value: "\\\"0.0.0.0:4352\\\""
+          - option: "ticker_interval"
+            value: 5
+          - option: "message_matcher"
+            value: "\\\"Type == \'heka.all-report\' || Type == \'heka.sandbox-output\' || Type == \'heka.sandbox-terminated\'\\\""
   roles:
     - { role: ansible-heka }
