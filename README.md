@@ -23,13 +23,44 @@ None.
 * ``heka_hekad_memprof``: hekad configuration enable MEM profiling (default: ``false``)
 * ``heka_hekad_pidfile``: hekad configuration PID file (default: ``/var/run/hekad.pid``)
 
-### hekad inputs
+### hekad tasks
 
-* ``heka_inputs``: List of heka inputs (default: statsd)
+* ``heka_tasks``: List of heka tasks (default: [])
 
-### hekad outputs
+#### Example:
+```
+heka_tasks:
+  - file: "logging"
+    section: "NginxAccessLogs"
+    options:
+      - option: "type"
+        value: "\\\"LogstreamerInput\\\""
+      - option: "splitter"
+        value: "\\\"TokenSplitter\\\""
+      - option: "decoder"
+        value: "\\\"NginxAccessDecoder\\\""
+      - option: "log_directory"
+        value: "\\\"/srv/sites/magento/log/nginx\\\""
+      - option: "file_match"
+        value: "\'access\\.log\'"
+  - file: "logging"
+    section: "NginxAccessDecoder"
+    options:
+      - option: "type"
+        value: "\\\"SandboxDecoder\\\""
+      - option: "script_type"
+        value: "\\\"lua\\\""
+      - option: "filename"
+        value: "\\\"lua_decoders/nginx_access.lua\\\""
+  - file: "logging"
+    section: "NginxAccessDecoder.config"
+    options:
+      - option: "log_format"
+        value: "\'$remote_addr - $remote_user [$time_local] \\\"$request\\\" $status $body_bytes_sent \\\"$http_referer\\\" \\\"$http_user_agent\\\"\'"
+      - option: "type"
+        value: "\\\"nginx.access\\\""
+```
 
-* ``heka_outputs``: List of heka outputs (default: dashboard, debug log)
 
 ## Dependencies
 
