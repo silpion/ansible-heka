@@ -24,17 +24,4 @@ heka_hekad_pidfile: "/var/run/hekad.pid"
 
 
 # configure heka inputs, decoders, filters, encoders, outputs
-heka_inputs:
-  - statsd:
-    type: statsd
-    name: statsd
-
-heka_outputs:
-  - dashbord:
-    type: dashboard
-    name: dashboard
-  - hekad_log:
-    type: fileoutput
-    name: hekad_log
-    path: /var/log/hekad.log
-    encoder: hekad_log_payload
+heka_tasks: []
