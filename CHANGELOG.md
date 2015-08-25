@@ -1,3 +1,14 @@
+# 0.7.0
+
+Mark Kusch (2):
+
+* Make heka role checkmode ready
+* Add heka dashboard configuration to test playbook
+
+Anja Siek (1):
+
+* change heka tasks handling
+
 # 0.6.0
 
 Mark Kusch (7):
