@@ -1,8 +1,8 @@
 ---
 - name: service restart hekad
   tags: heka
-  sudo: yes
+  become: true
   when: heka_service_allow_restart
   service:
-    state=restarted
-    name={{ heka_service_name }}
+    state: restarted
+    name: "{{ heka_service_name }}"

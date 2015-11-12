@@ -10,6 +10,6 @@
 
 - name: Install heka
   tags: heka
-  become: yes
+  become: true
   when: '"heka" not in heka_query_installed_packages.stdout'
   command: rpm -ivh {{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
