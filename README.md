@@ -22,6 +22,9 @@ None.
 * ``heka_hekad_cpuprof``: hekad configuration enable CPU profiling (default: ``false``)
 * ``heka_hekad_memprof``: hekad configuration enable MEM profiling (default: ``false``)
 * ``heka_hekad_pidfile``: hekad configuration PID file (default: ``/var/run/hekad.pid``)
+* ``heka_service_template_systemd``: Configure template to use for configuring the hekad service for Systemd (default: ``service_systemd.j2``)
+* ``heka_service_template_sysvinit``: Configure template to use for configuring the hekad service for SysV (default: ``service_sysvinit.j2``)
+* ``heka_service_template_upstart``: Configure template to use for configuring the hekad service for Upstart (default: ``service_upstart.j2``)
 
 ### hekad tasks
 

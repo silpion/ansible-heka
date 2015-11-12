@@ -5,4 +5,4 @@
   when: heka_service_allow_restart
   service:
     state=restarted
-    name=hekad
+    name={{ heka_service_name }}

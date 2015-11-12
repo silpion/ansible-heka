@@ -78,6 +78,11 @@
     option={{ item.1.option }}
     value="{{ item.1.value }}"
 
+
+- name: Install hekad service
+  tags: heka
+  include: service.yml
+
 - name: Ensure heka service
   tags: heka
   become: true
