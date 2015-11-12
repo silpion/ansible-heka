@@ -47,11 +47,11 @@
     - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
   file:
-    state=directory
-    owner=0
-    group=0
-    mode=0755
-    dest={{ item }}
+    state: directory
+    owner: 0
+    group: 0
+    mode: 0755
+    dest: "{{ item }}"
 
 
 - name: Install hekad configuration
@@ -59,11 +59,11 @@
   become: true
   notify: service restart hekad
   template:
-    src=hekad.toml.j2
-    dest={{ heka_hekad_etc_dir }}/hekad.toml
-    owner=0
-    group=0
-    mode=0644
+    src: hekad.toml.j2
+    dest: "{{ heka_hekad_etc_dir }}/hekad.toml"
+    owner: 0
+    group: 0
+    mode: 0644
 
 - name: Install heka tasks configuration
   tags: heka
@@ -73,10 +73,10 @@
     - heka_tasks
     - options
   ini_file:
-    dest={{ heka_hekad_etc_dir }}/{{ item.0.file }}.toml
-    section={{ item.0.section }}
-    option={{ item.1.option }}
-    value="{{ item.1.value }}"
+    dest: "{{ heka_hekad_etc_dir }}/{{ item.0.file }}.toml"
+    section: "{{ item.0.section }}"
+    option: "{{ item.1.option }}"
+    value: "{{ item.1.value }}"
 
 
 - name: Install hekad service
@@ -87,6 +87,6 @@
   tags: heka
   become: true
   service:
-    state=started
-    enabled=yes
-    name=hekad
+    state: started
+    enabled: true
+    name: "{{ heka_service_name }}"
