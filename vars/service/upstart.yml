@@ -1,0 +1,6 @@
+---
+heka_service_template: "{{ heka_service_template_upstart }}"
+heka_service_file: hekad.conf
+heka_service_name: hekad
+heka_service_dir: /etc/init
+heka_service_file_mode: 644

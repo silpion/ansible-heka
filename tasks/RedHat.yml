@@ -2,21 +2,14 @@
 - name: Query RedHat package database for heka
   tags: heka
   register: heka_query_installed_packages
+  always_run: true
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
   command: rpm -qa heka
 
 - name: Install heka
   tags: heka
-  become: yes
+  become: true
   when: '"heka" not in heka_query_installed_packages.stdout'
-  command: rpm -ivH {{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
-
-- name: Install hekad service
-  tags: heka
-  become: yes
-  notify: service restart hekad
-  template:
-    src=service_sysvinit.j2
-    dest=/etc/init.d/hekad
-    owner=0
-    group=0
-    mode=0755
+  command: rpm -ivh {{ util_persistent_data_path_remote }}/{{ heka_install_filename }}
