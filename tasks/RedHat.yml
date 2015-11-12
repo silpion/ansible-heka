@@ -2,6 +2,10 @@
 - name: Query RedHat package database for heka
   tags: heka
   register: heka_query_installed_packages
+  always_run: true
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
   command: rpm -qa heka
 
 - name: Install heka
