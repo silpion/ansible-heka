@@ -67,6 +67,7 @@
 
 - name: Install heka tasks configuration
   tags: heka
+  become: true
   notify: service restart hekad
   with_subelements:
     - heka_tasks
