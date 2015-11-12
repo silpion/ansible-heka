@@ -1,3 +1,9 @@
+# 1.0.1
+
+Mark Kusch (1):
+
+* Update metadata to reflect support for EL 7
+
 # 1.0.0
 
 Anja Siek (1):
