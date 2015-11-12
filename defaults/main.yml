@@ -4,6 +4,11 @@ heka_version: 0.9.2
 # Whether to allow the handlers to automatically restart heka
 heka_service_allow_restart: true
 
+# Configure service templates
+heka_service_template_systemd: service_systemd.j2
+heka_service_template_sysvinit: service_sysvinit.j2
+heka_service_template_upstart: service_upstart.j2
+
 # where heka configuration files will get installed
 heka_hekad_etc_dir: /etc/hekad.d
 
