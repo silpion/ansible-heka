@@ -67,6 +67,7 @@
 
 - name: Install heka tasks configuration
   tags: heka
+  become: true
   notify: service restart hekad
   with_subelements:
     - heka_tasks
@@ -76,6 +77,11 @@
     section={{ item.0.section }}
     option={{ item.1.option }}
     value="{{ item.1.value }}"
+
+
+- name: Install hekad service
+  tags: heka
+  include: service.yml
 
 - name: Ensure heka service
   tags: heka

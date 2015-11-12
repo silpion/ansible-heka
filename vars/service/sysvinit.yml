@@ -1,0 +1,6 @@
+---
+heka_service_template: "{{ heka_service_template_sysvinit }}"
+heka_service_file: hekad
+heka_service_name: hekad
+heka_service_dir: /etc/init.d
+heka_service_file_mode: 755
