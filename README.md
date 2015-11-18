@@ -31,6 +31,7 @@ None.
 * ``heka_tasks``: List of heka tasks (default: [])
 
 #### Example:
+
 ```
 heka_tasks:
   - file: "logging"
@@ -64,6 +65,17 @@ heka_tasks:
         value: "\\\"nginx.access\\\""
 ```
 
+### heka_plugins
+
+* ```heka_plugins```: List of heka plugin files to copy
+
+#### Example:
+
+```
+heka_plugins:
+  - src: "files/heka/linux_diskusage.lua"
+    dest: "/usr/share/heka/lua_decoders/linux_diskusage.lua"
+```
 
 ## Dependencies
 

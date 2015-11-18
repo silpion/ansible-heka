@@ -78,6 +78,16 @@
     option: "{{ item.1.option }}"
     value: "{{ item.1.value }}"
 
+- name: Copy additional heka plugins
+  tags: heka
+  notify: service restart hekad
+  with_items: "{{ heka_plugins }}"
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: 0
+    group: 0
+    mode: 0644
 
 - name: Install hekad service
   tags: heka
