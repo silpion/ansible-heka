@@ -1,0 +1,22 @@
+---
+- name: Configure service management
+  tags: heka
+  include_vars: "service/{{ ansible_local['util']['init']['system'] }}.yml"
+
+- name: Install hekad service
+  tags: heka
+  become: true
+  register: heka_registered_install_hekad_service
+  notify: service restart hekad
+  template:
+    src: "{{ heka_service_template }}"
+    dest: "{{ heka_service_dir }}/{{ heka_service_file }}"
+    owner: 0
+    group: 0
+    mode: "{{ heka_service_file_mode }}"
+
+- name: Reload systemd
+  tags: heka
+  become: true
+  when: heka_registered_install_hekad_service.changed and ansible_local.util.init.system == 'systemd'
+  command: systemctl daemon-reload

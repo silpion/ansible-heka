@@ -1,0 +1,6 @@
+---
+heka_service_template: "{{ heka_service_template_systemd }}"
+heka_service_file: "hekad.service"
+heka_service_name: "hekad"
+heka_service_dir: /etc/systemd/system
+heka_service_file_mode: 644

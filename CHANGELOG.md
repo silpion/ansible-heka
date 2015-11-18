@@ -1,3 +1,26 @@
+# 1.0.1
+
+Mark Kusch (1):
+
+* Update metadata to reflect support for EL 7
+
+# 1.0.0
+
+Anja Siek (1):
+
+* fix centos support, update wrong sha256sum
+
+Mark Kusch (8):
+
+* Fix copy/paste in SysV template (thx to mdb)
+* Re-run ansible-generator
+* Add environment vars for testing the role with CentOS 7 via Vagrant
+* Fix installation of heka configuration tasks
+* Add better control for managing a hekad service
+* Add --check support when running on ansible\_os\_family == RedHat
+* Use complex args coding style
+* Use true and false for boolean arguments
+
 # 0.7.0
 
 Mark Kusch (2):

@@ -1,0 +1,10 @@
+[Unit]
+Description=Hekad Stream Processor
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/hekad -config={{ heka_hekad_etc_dir }}
+Restart=on-abort
+
+[Install]
+WantedBy=default.target
