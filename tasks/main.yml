@@ -9,7 +9,7 @@
 - name: Load version vars
   tags: heka
   with_first_found:
-    - ../vars/versions/{{ ansible_os_family }}/{{ heka_version }}.yml
+    - ../vars/versions/{{ heka_version }}.yml
     - ../vars/versions/default.yml
   include_vars: "{{ item }}"
 
@@ -20,25 +20,30 @@
     that:
       - heka_install_filename_sha256sum not in (None, "")
 
-
-- name: Include OS specific vars
+- name: Configure service management
   tags: heka
-  include_vars: "{{ ansible_os_family }}.yml"
-
+  include_vars: "service/{{ ansible_local['util']['init']['system'] }}.yml"
 
 - name: Include util get/put instructions
   tags: heka
   include: util.yml
 
-
-- include: Debian.yml
+- name: Stop heka service if istall or update
   tags: heka
-  when: ansible_os_family == 'Debian'
+  when: ( ansible_local.preferences.general.heka_installed_version is undefined ) or
+        ( ansible_local.preferences.general.heka_installed_version != heka_version )
+  become: true
+  service:
+    state: stopped
+    enabled: true
+    name: "{{ heka_service_name }}"
 
-- include: RedHat.yml
+- name: Install heka
   tags: heka
-  when: ansible_os_family == 'RedHat'
-
+  when: ( ansible_local.preferences.general.heka_installed_version is undefined ) or
+        ( ansible_local.preferences.general.heka_installed_version != heka_version )
+  become: true
+  shell:  "tar --extract --directory=/usr/ --overwrite --strip-components=1 --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
 
 - name: Install hekad directories
   tags: heka
@@ -52,7 +57,6 @@
     group: 0
     mode: 0755
     dest: "{{ item }}"
-
 
 - name: Install hekad configuration
   tags: heka
@@ -88,6 +92,26 @@
     owner: 0
     group: 0
     mode: 0644
+
+- name: Install Ansible facts.d directory
+  tags: heka
+  become: yes
+  file:
+    state=directory
+    dest=/etc/ansible/facts.d
+    owner=0
+    group=0
+    mode=0755
+
+- name: Install heka facts
+  tags: heka
+  become: yes
+  template:
+    src=facts.j2
+    dest=/etc/ansible/facts.d/heka.fact
+    owner=0
+    group=0
+    mode=0644
 
 - name: Install hekad service
   tags: heka

@@ -4,3 +4,5 @@ heka_supported_platforms:
   - RedHat
 
 heka_mirror: https://github.com/mozilla-services/heka/releases/download
+
+heka_install_filename: heka-{{ heka_pkg_version }}-linux-amd64.tar.gz

@@ -1,5 +1,5 @@
 ---
-heka_version: 0.9.2
+heka_version: 0.10.0b1
 
 # Whether to allow the handlers to automatically restart heka
 heka_service_allow_restart: true
