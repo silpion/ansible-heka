@@ -5,14 +5,12 @@
     that:
       - ansible_os_family in heka_supported_platforms
 
-
 - name: Load version vars
   tags: heka
   with_first_found:
     - ../vars/versions/{{ heka_version }}.yml
     - ../vars/versions/default.yml
   include_vars: "{{ item }}"
-
 
 - name: Assert version vars
   tags: heka
@@ -24,31 +22,41 @@
   tags: heka
   include_vars: "service/{{ ansible_local['util']['init']['system'] }}.yml"
 
+- name: Check for install or update
+  tags: heka
+  when: ( ansible_local.heka.general.heka_installed_version is undefined ) or
+        ( ansible_local.heka.general.heka_installed_version != heka_version )
+  set_fact:
+    heka_install: true
+
 - name: Include util get/put instructions
   tags: heka
+  when: heka_install
   include: util.yml
 
 - name: Stop heka service if istall or update
   tags: heka
-  when: ( ansible_local.preferences.general.heka_installed_version is undefined ) or
-        ( ansible_local.preferences.general.heka_installed_version != heka_version )
   become: true
+  when: heka_install
   service:
     state: stopped
-    enabled: true
     name: "{{ heka_service_name }}"
 
-- name: Install heka
+- name: Remove old version
   tags: heka
-  when: ( ansible_local.preferences.general.heka_installed_version is undefined ) or
-        ( ansible_local.preferences.general.heka_installed_version != heka_version )
+  when: heka_install
   become: true
-  shell:  "tar --extract --directory=/usr/ --overwrite --strip-components=1 --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
+  file:
+    state: absent
+    path: "/opt/heka-{{ ansible_local.heka.general.heka_installed_version }}"
+    force: true
 
 - name: Install hekad directories
   tags: heka
   become: true
+  when: heka_install
   with_items:
+    - "{{ heka_install_dir }}"
     - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
   file:
@@ -57,6 +65,12 @@
     group: 0
     mode: 0755
     dest: "{{ item }}"
+
+- name: Install heka
+  tags: heka
+  when: heka_install
+  become: true
+  shell:  "tar --extract --directory={{ heka_install_dir }}/ --overwrite --strip-components=1 --no-same-owner --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
 
 - name: Install hekad configuration
   tags: heka

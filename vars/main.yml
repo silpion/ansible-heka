@@ -6,3 +6,5 @@ heka_supported_platforms:
 heka_mirror: https://github.com/mozilla-services/heka/releases/download
 
 heka_install_filename: heka-{{ heka_pkg_version }}-linux-amd64.tar.gz
+
+heka_install_dir: "/opt/heka-{{ heka_version }}"
