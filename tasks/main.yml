@@ -70,7 +70,7 @@
   tags: heka
   when: heka_install
   become: true
-  shell:  "tar --extract --directory={{ heka_install_dir }}/ --overwrite --strip-components=1 --no-same-owner --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
+  command:  "tar --extract --directory={{ heka_install_dir }}/ --overwrite --strip-components=1 --no-same-owner --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
 
 - name: Install hekad configuration
   tags: heka
