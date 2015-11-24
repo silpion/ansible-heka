@@ -1,3 +1,13 @@
+# 1.1.0
+
+Anja Siek (5):
+
+* add option to install heka plugins via copy
+* remove os-dependencies and allow to update heka version
+* install heka to /opt/heka-;
+* fix inital remove task and update smal beautifiing
+* change shell to command
+
 # 1.0.1
 
 Mark Kusch (1):
