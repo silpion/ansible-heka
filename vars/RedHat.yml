@@ -1,2 +1,0 @@
----
-heka_install_filename: heka-{{ heka_version|replace('.', '_') }}-linux-amd64.rpm

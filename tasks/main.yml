@@ -5,14 +5,12 @@
     that:
       - ansible_os_family in heka_supported_platforms
 
-
 - name: Load version vars
   tags: heka
   with_first_found:
-    - ../vars/versions/{{ ansible_os_family }}/{{ heka_version }}.yml
+    - ../vars/versions/{{ heka_version }}.yml
     - ../vars/versions/default.yml
   include_vars: "{{ item }}"
-
 
 - name: Assert version vars
   tags: heka
@@ -20,30 +18,45 @@
     that:
       - heka_install_filename_sha256sum not in (None, "")
 
-
-- name: Include OS specific vars
+- name: Configure service management
   tags: heka
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "service/{{ ansible_local['util']['init']['system'] }}.yml"
 
+- name: Check for install or update
+  tags: heka
+  when: ( ansible_local.heka.general.heka_version is undefined ) or
+        ( ansible_local.heka.general.heka_version != heka_version )
+  set_fact:
+    heka_install: true
 
 - name: Include util get/put instructions
   tags: heka
+  when: heka_install
   include: util.yml
 
-
-- include: Debian.yml
+- name: Stop heka service if istall or update
   tags: heka
-  when: ansible_os_family == 'Debian'
+  become: true
+  when: heka_install
+  service:
+    state: stopped
+    name: "{{ heka_service_name }}"
 
-- include: RedHat.yml
+- name: Remove old version
   tags: heka
-  when: ansible_os_family == 'RedHat'
-
+  when: heka_install and ansible_local.heka.general.heka_version is defined
+  become: true
+  file:
+    state: absent
+    path: "/opt/heka-{{ ansible_local.heka.general.heka_version }}"
+    force: true
 
 - name: Install hekad directories
   tags: heka
   become: true
+  when: heka_install
   with_items:
+    - "{{ heka_install_dir }}"
     - "{{ heka_hekad_etc_dir }}"
     - "{{ heka_hekad_base_dir }}/dashboard"
   file:
@@ -53,6 +66,11 @@
     mode: 0755
     dest: "{{ item }}"
 
+- name: Install heka
+  tags: heka
+  when: heka_install
+  become: true
+  command:  "tar --extract --directory={{ heka_install_dir }}/ --overwrite --strip-components=1 --no-same-owner --file={{ util_persistent_data_path_remote }}/{{ heka_install_filename }} "
 
 - name: Install hekad configuration
   tags: heka
@@ -85,6 +103,26 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    owner: 0
+    group: 0
+    mode: 0644
+
+- name: Install Ansible facts.d directory
+  tags: heka
+  become: yes
+  file:
+    state: directory
+    dest: /etc/ansible/facts.d
+    owner: 0
+    group: 0
+    mode: 0755
+
+- name: Install heka facts
+  tags: heka
+  become: yes
+  template:
+    src: facts.j2
+    dest: /etc/ansible/facts.d/heka.fact
     owner: 0
     group: 0
     mode: 0644

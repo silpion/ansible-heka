@@ -1,7 +1,4 @@
 ---
-- name: Configure service management
-  tags: heka
-  include_vars: "service/{{ ansible_local['util']['init']['system'] }}.yml"
 
 - name: Install hekad service
   tags: heka

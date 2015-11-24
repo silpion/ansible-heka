@@ -1,5 +1,5 @@
 ---
-heka_version: 0.9.2
+heka_version: 0.10.0b1
 
 # Whether to allow the handlers to automatically restart heka
 heka_service_allow_restart: true
@@ -22,11 +22,11 @@ heka_hekad_poolsize: 100
 heka_hekad_plugin_chansize: 50
 heka_hekad_sample_denominator: 1000
 heka_hekad_base_dir: "/var/cache/hekad"
-heka_hekad_share_dir: "/usr/share/heka"
+heka_hekad_share_dir: "{{ heka_install_dir }}/share/heka"
 heka_hekad_cpuprof: false
 heka_hekad_memprof: false
 heka_hekad_pidfile: "/var/run/hekad.pid"
-
+heka_install: false
 
 # configure heka inputs, decoders, filters, encoders, outputs
 heka_tasks: []
