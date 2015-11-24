@@ -24,8 +24,8 @@
 
 - name: Check for install or update
   tags: heka
-  when: ( ansible_local.heka.general.heka_installed_version is undefined ) or
-        ( ansible_local.heka.general.heka_installed_version != heka_version )
+  when: ( ansible_local.heka.general.heka_version is undefined ) or
+        ( ansible_local.heka.general.heka_version != heka_version )
   set_fact:
     heka_install: true
 
@@ -44,11 +44,11 @@
 
 - name: Remove old version
   tags: heka
-  when: heka_install
+  when: heka_install and ansible_local.heka.general.heka_version is defined
   become: true
   file:
     state: absent
-    path: "/opt/heka-{{ ansible_local.heka.general.heka_installed_version }}"
+    path: "/opt/heka-{{ ansible_local.heka.general.heka_version }}"
     force: true
 
 - name: Install hekad directories
@@ -111,21 +111,21 @@
   tags: heka
   become: yes
   file:
-    state=directory
-    dest=/etc/ansible/facts.d
-    owner=0
-    group=0
-    mode=0755
+    state: directory
+    dest: /etc/ansible/facts.d
+    owner: 0
+    group: 0
+    mode: 0755
 
 - name: Install heka facts
   tags: heka
   become: yes
   template:
-    src=facts.j2
-    dest=/etc/ansible/facts.d/heka.fact
-    owner=0
-    group=0
-    mode=0644
+    src: facts.j2
+    dest: /etc/ansible/facts.d/heka.fact
+    owner: 0
+    group: 0
+    mode: 0644
 
 - name: Install hekad service
   tags: heka
