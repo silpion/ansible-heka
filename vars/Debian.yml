@@ -1,2 +1,0 @@
----
-heka_install_filename: heka_{{ heka_version }}_amd64.deb
