@@ -37,7 +37,9 @@
 - name: Stop heka service if istall or update
   tags: heka
   become: true
-  when: heka_install
+  when:
+    - ansible_local.heka.general.heka_version is defined
+    - heka_install
   service:
     state: stopped
     name: "{{ heka_service_name }}"
@@ -98,6 +100,7 @@
 
 - name: Copy additional heka plugins
   tags: heka
+  become: true
   notify: service restart hekad
   with_items: "{{ heka_plugins }}"
   copy:
