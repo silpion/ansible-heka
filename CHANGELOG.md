@@ -1,3 +1,14 @@
+# 1.1.1
+
+Anja Siek (2):
+
+* add privilege escalation to plugin install
+* only try to stop service on update and not on install
+
+Mark Kusch (1):
+
+* Make utilization v2 compatible
+
 # 1.1.0
 
 Anja Siek (5):
