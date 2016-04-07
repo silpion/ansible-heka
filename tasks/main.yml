@@ -30,10 +30,23 @@
   set_fact:
     heka_install: true
 
-- name: Include util get/put instructions
+- name: Include assets persistency tasks
   tags: heka
-  when: heka_install
-  include: util.yml
+  include: ../../silpion.lib/tasks/datapersistency.yml
+
+- name: Include lib get_url
+  tags: heka
+  include: ../../silpion.lib/tasks/get_url.yml
+  vars:
+    url: "{{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}"
+    filename: "{{ heka_install_filename }}"
+    sha256sum: "{{ heka_install_filename_sha256sum}}"
+
+- name: Include lib copy
+  tags: heka
+  include: ../../silpion.lib/tasks/copy.yml
+  vars:
+    filename: "{{ heka_install_filename }}"
 
 - name: Stop heka service if istall or update
   tags: heka
@@ -91,7 +104,7 @@
   become: true
   notify: service restart hekad
   with_subelements:
-    - heka_tasks
+    - "{{ heka_tasks }}"
     - options
   ini_file:
     dest: "{{ heka_hekad_etc_dir }}/{{ item.0.file }}.toml"
@@ -113,7 +126,7 @@
 
 - name: Install Ansible facts.d directory
   tags: heka
-  become: yes
+  become: true
   file:
     state: directory
     dest: /etc/ansible/facts.d
@@ -123,7 +136,7 @@
 
 - name: Install heka facts
   tags: heka
-  become: yes
+  become: true
   template:
     src: facts.j2
     dest: /etc/ansible/facts.d/heka.fact
