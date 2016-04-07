@@ -1,3 +1,9 @@
+# 2.0.1
+
+Anja Siek (1):
+
+* fix dependencies
+
 # 2.0.0
 
 Anja Siek (4):
