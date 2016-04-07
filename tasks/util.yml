@@ -1,11 +1,19 @@
 ---
-- include: ../../silpion.util/tasks/_get.yml
+
+- name: Include assets persistency tasks
+  taigs: heka
+  include: ../../silpion.lib/tasks/datapersistency.yml
+
+- name: Include lib get_url
+  tags: heka
+  include: ../../silpion.lib/tasks/get_url.yml
   vars:
     url: "{{ heka_mirror }}/v{{ heka_version }}/{{ heka_install_filename }}"
-    dest: "{{ util_persistent_data_path_local }}/{{ heka_install_filename }}"
-    sha256sum: "{{ heka_install_filename_sha256sum }}"
+    filename: "{{ heka_install_filename }}"
+    sha256sum: "{{ heka_install_filename_sha256sum}}"
 
-- include: ../../silpion.util/tasks/_put.yml
+- name: Include lib copy
+  tags: heka
+  include: ../../silpion.lib/tasks/copy.yml
   vars:
-    src: "{{ util_persistent_data_path_local }}/{{ heka_install_filename }}"
-    dest: "{{ util_persistent_data_path_remote }}/{{ heka_install_filename }}"
+    filename: "{{ heka_install_filename }}"
