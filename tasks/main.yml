@@ -20,7 +20,7 @@
 
 - name: Configure service management
   tags: heka
-  when: ansible_local is defined
+  when: (ansible_local|default({})).util is defined
   include_vars: "service/{{ ansible_local.util.init.system }}.yml"
 
 - name: Check for install or update
