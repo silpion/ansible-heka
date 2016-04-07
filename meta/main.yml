@@ -33,4 +33,5 @@ galaxy_info:
   - monitoring
   - system
 dependencies:
-  - { role: silpion.util }
+  - src: https://github.com/silpion/ansible-util
+    name: silpion.util
