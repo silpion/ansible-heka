@@ -1,3 +1,12 @@
+# 2.0.0
+
+Anja Siek (4):
+
+* fix ansible\_local usage on check mode
+* fix util calls
+* change condition
+* mv util tasks in main
+
 # 1.1.1
 
 Anja Siek (2):
